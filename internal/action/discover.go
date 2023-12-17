@@ -4,13 +4,11 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"golang.org/x/sys/unix"
 	"jch-onvif/internal/util"
 	"net"
 	"net/netip"
 	"strings"
 	"sync"
-	"syscall"
 	"time"
 )
 
@@ -87,17 +85,6 @@ type ProbeMatch struct {
 
 type ProbeEndpointReference struct {
 	Address string `xml:"Address"`
-}
-
-var listenConfig = net.ListenConfig{
-	Control: func(network, address string, c syscall.RawConn) error {
-		return c.Control(func(fd uintptr) {
-			err := unix.SetsockoptInt(int(fd), unix.SOL_SOCKET, unix.SO_REUSEPORT, 1)
-			if err != nil {
-				fmt.Println("Error creating socket: ", err)
-			}
-		})
-	},
 }
 
 func listen(src *net.UDPAddr, uuid string, waitForever bool, wg *sync.WaitGroup) {

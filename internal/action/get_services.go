@@ -27,7 +27,9 @@ var getServicesPayloadTemplate = `
 		</wsa:MessageID>
 	</soapenv:Header>
 	<soapenv:Body>
-		<tds:GetServices />	
+		<tds:GetServices>
+			<tds:IncludeCapability>true</tds:IncludeCapability>
+	    </tds:GetServices>
 	</soapenv:Body>
 </soapenv:Envelope>
 `

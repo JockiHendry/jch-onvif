@@ -20,7 +20,7 @@ var getProfilesPayloadTemplate = `
 	xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope">
 	<soapenv:Header>
 		<wsa:Action>
-			http://www.onvif.org/ver10/media/wsdl/GetUsers	
+			http://www.onvif.org/ver10/media/wsdl/GetProfiles	
 		</wsa:Action>
 		<wsa:MessageID>
 			urn:uuid:%s

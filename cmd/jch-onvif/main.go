@@ -13,6 +13,9 @@ var targetAction string
 var targetIP string
 var targetRange string
 var serviceUrl string
+var authType string
+var authUsername string
+var authPassword string
 
 func main() {
 	handlers := []action.Handler{
@@ -41,6 +44,9 @@ func main() {
 	flag.StringVar(&targetIP, "ip", "127.0.0.1", "Target IP address")
 	flag.StringVar(&targetRange, "ipRange", "192.168.0.0/24", "Target IP range")
 	flag.StringVar(&serviceUrl, "serviceUrl", "http://127.0.0.0/device_service", "SOAP service URL for target device")
+	flag.StringVar(&authType, "authType", "", "Set to http-digest for HTTP based authentication")
+	flag.StringVar(&authUsername, "authUsername", "", "Username for authentication")
+	flag.StringVar(&authPassword, "authPassword", "", "Password for authentication")
 	flag.Parse()
 	arguments := action.Arguments{
 		NetInterface: netInterface,
@@ -50,6 +56,13 @@ func main() {
 		Args:         flag.Args(),
 	}
 	executed := false
+	if authType == "http-digest" {
+		err := util.InitHttpDigestAuthentication(authUsername, authPassword, serviceUrl)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+	}
 	for _, handler := range handlers {
 		if handler.ActionKey == targetAction {
 			err := handler.Action(arguments)

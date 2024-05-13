@@ -46,6 +46,15 @@ jch-onvif -i eth0 -serviceUrl http://192.168.1.10:1234/onvif/device_service -a g
 
 It will launch browser and display an image that represents the snapshot of video stream at the time when the command is executed.
 
+### Authentication
+
+Only HTTP digest authentication (RFC 2069) is supported for now.  To enable authentication, add `-authType http-digest` when 
+running the command.  To specify username and password, use `-authUsername` and `-authPassword`, for example:
+
+```
+jch-onvif -i eth0 -serviceUrl http://192.168.1.10:1234/onvif/device_service -a get-system-date-time -authType http-digest -authUsername 'user1' -authPassword 'passwd'
+```
+
 ### Use Cases
 
 #### Searching For Exposed ONVIF Devices

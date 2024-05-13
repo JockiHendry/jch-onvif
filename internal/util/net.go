@@ -51,7 +51,12 @@ func SoapCall(interfaceName string, serviceUrl string, body string) ([]byte, err
 			},
 		},
 	}
-	response, err := client.Post(serviceUrl, "text/xml", bytes.NewBufferString(body))
+	req, _ := http.NewRequest("POST", serviceUrl, bytes.NewBufferString(body))
+	req.Header.Set("Content-Type", "text/xml")
+	if httpDigestAuthentication != nil {
+		req.Header.Set("Authorization", httpDigestAuthentication.AuthorizationHeaderValue("POST", req.URL.Path))
+	}
+	response, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("soap request failed: %w", err)
 	}
